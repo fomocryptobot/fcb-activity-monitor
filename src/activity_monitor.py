@@ -282,7 +282,7 @@ class ActivityMonitor:
                 alert_data['whale_count'],
                 alert_data['total_volume'],
                 alert_data['confidence'],
-                json.dumps(alert_data)
+                json.dumps(alert_data, default=str)
             ))
             
             conn.commit()
@@ -346,6 +346,8 @@ class ActivityMonitor:
                 # Save alert to database
                 if self.save_alert_to_database(alert):
                     alerts_generated += 1
+                else:
+                    print(f"⚠️ Failed to save alert: Object of type datetime is not JSON serializable", flush=True)
         
         # Process wallet correlations
         if wallet_correlations:
